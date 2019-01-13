@@ -17,7 +17,7 @@ VRChat用のUnityエディタ拡張です。
 ![Scaling Image](https://user-images.githubusercontent.com/13612643/51085516-d7c6ed80-177d-11e9-83d5-61db7af6904b.png)
 
 1. Hierarchyから`VRC_AvatarDescriptorコンポーネントが存在するGameObject`を選択
-  - 選択時、自動的にGameObjectのViewPositionとScaleからDefault ViewPositionが求められます
+    - 選択時、自動的にGameObjectのViewPositionとScaleからDefault ViewPositionが求められます
 1. `Default ViewPosition`に`GameObjectのScaleが全て1の時の値`を設定
 1. `Scale`に任意の値を設定
 1. `Change Scale`ボタンを押す
