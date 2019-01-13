@@ -62,13 +62,9 @@ module Finger =
     finger.fingers.[0] <- EditorGUILayout.Slider((getFingerName 0 finger), (getFinger 0 finger), -2.f, 2.f)
 
   let setFingerCurve (clip : AnimationClip) (finger : Finger) =
-    let mutable binding = new EditorCurveBinding()
-    binding.path <- ""
-    binding.``type`` <- typeof<Animator>
-    let keyframe = 1.f / 60.f
+    let endKeyFrame = 1.f / clip.frameRate
     finger.fingers |> Array.iteri (fun i value ->
-      binding.propertyName <- finger |> getAnimatorName i
-      let curve = AnimationCurve.Linear(0.f, value, keyframe, value)
-      curve.AddKey(new Keyframe(keyframe, value)) |> ignore 
+      let binding = EditorCurveBinding.PPtrCurve("", typeof<Animator>, finger |> getAnimatorName i)
+      let curve = AnimationCurve.Linear(0.f, value, endKeyFrame, value)
       AnimationUtility.SetEditorCurve(clip, binding, curve)
     )
