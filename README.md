@@ -7,6 +7,13 @@ VRChat用のUnityエディタ拡張です。
 ## インストール
 
 [こちらから.unitypackageファイルをダウンロード](http://github.com/mamunine/FSMadTools/releases)し、Unity上で`Assets -> Import Package -> Custom Package...`から、もしくは`ダウンロードした.unitypackageファイルをダブルクリック`してインポートしてください。
+インポートすると、Unityのメニューバーに`MadTools`が追加されます。
+
+---
+
+## 使い方
+Unityのメニューバーから`MadTools`を選択してください。
+各ツールの使い方は以下を参照してください。
 
 ---
 
