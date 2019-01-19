@@ -4,24 +4,29 @@ open FSMadTools.Utility
 open UnityEngine
 open UnityEditor
 open UniRx
-open CustomGUI
 
-type TagScalingEditor() = inherit ToolbarTag("Scaling")
-type TagFingerEditor() = inherit ToolbarTag("Finger Editor")
-type TagLipSyncAttacher() = inherit ToolbarTag("LipSync Attacher")
-
+type Tags =
+  | TagScalingEditor
+  | TagLipSyncAttacher
+  | TagFingerEditor
+  with
+    member x.toolbarName = x |> function
+      | TagScalingEditor -> "Scaling"
+      | TagLipSyncAttacher -> "LipSync Attacher"
+      | TagFingerEditor -> "FingerEditor"
+    
 type AvatarTools() as x =
   inherit EditorWindow()
 
-  let tabs : ToolbarTag list = [
-    new TagScalingEditor()
-    new TagLipSyncAttacher()
-    new TagFingerEditor()
+  let tags = [
+    TagScalingEditor
+    TagLipSyncAttacher
+    TagFingerEditor
   ]
 
   let mutable skin = None
   let mutable style = None
-  let selectTab = new ReactiveProperty<ToolbarTag>(new TagScalingEditor() :> ToolbarTag)
+  let selectTab = new ReactiveProperty<Tags>(TagScalingEditor)
   let mutable selectEditor : ToolBase option = None
 
   let OnDisable () =
@@ -43,15 +48,14 @@ type AvatarTools() as x =
       Unity.AssetDatabase.loadAssetAtPath<GUISkin>(skinPath) |> Option.apply (fun s ->
         style <- Some <| s.GetStyle("Tab")
       )
-    selectTab.SkipLatestValueOnSubscribe().Subscribe(fun st ->
+    selectTab.Subscribe(fun st ->
       if AnimationMode.InAnimationMode() then
         AnimationMode.StopAnimationMode()
       selectEditor <-
         match st with
-        | :? TagScalingEditor -> Some (new ScalingAvatar() :> ToolBase)
-        | :? TagLipSyncAttacher -> Some (new LipSyncAttacher() :> ToolBase)
-        | :? TagFingerEditor -> Some (new FingerEditor() :> ToolBase)
-        | _ -> None
+        | TagScalingEditor -> Some (new ScalingAvatar() :> ToolBase)
+        | TagLipSyncAttacher -> Some (new LipSyncAttacher() :> ToolBase)
+        | TagFingerEditor -> Some (new FingerEditor() :> ToolBase)
     )
   
   let OnGUI () =
@@ -60,7 +64,7 @@ type AvatarTools() as x =
       let oldSkin = GUI.skin
 
       GUI.skin <- skin
-      selectTab.Value <- CustomGUILayout.styledToolbar selectTab.Value tabs style
+      selectTab.Value <- CustomGUILayout.styledToolbar selectTab.Value tags style
 
       GUI.skin <- oldSkin
 

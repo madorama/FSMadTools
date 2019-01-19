@@ -4,13 +4,7 @@ open UnityEngine
 open UnityEditor
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-module CustomGUI =
-  type ToolbarTag(name : string) =
-    member val name = name with get
-
-[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module CustomGUILayout =
-  open CustomGUI
   open FSMadTools.Utility
 
   [<CompiledName "ObjectField">]
@@ -19,13 +13,13 @@ module CustomGUILayout =
       |> Option.ofObj
 
   [<CompiledName "Toolbar">]
-  let styledToolbar (sel : ToolbarTag) (tags : ToolbarTag list) (style : GUIStyle) : ToolbarTag =
-    let names = tags |> List.map (fun tag -> tag.name) |> List.toArray
-    let indexedTags = tags |> List.mapi (fun i x -> (i, x))
+  let inline styledToolbar (sel : ^a) (tags : ^a list) (style : GUIStyle) : ^a when ^a : (member toolbarName : string) =
+    let getTagName tag = (^a : (member toolbarName : string) tag)
+    let names = tags |> List.map getTagName |> List.toArray
     let selId =
       tags
       |> List.mapi (fun i x -> (i, x))
-      |> List.tryFind (fun (_, tag) -> sel.GetType() = tag.GetType())
+      |> List.tryFind (fun (_, tag) -> sel = tag)
       |> function
         | None -> 0
         | Some (i, _) -> i
@@ -33,7 +27,7 @@ module CustomGUILayout =
     tags.[newSel]
 
   [<CompiledName "Toolbar">]
-  let inline toolbar (sel : ToolbarTag) (values : ToolbarTag list) : ToolbarTag =
+  let inline toolbar (sel : ^a) (values : ^a list) : ^a when ^a : (member toolbarName : string) =
     styledToolbar sel values EditorStyles.toolbar
 
   [<CompiledName("HorizontalScope")>]
