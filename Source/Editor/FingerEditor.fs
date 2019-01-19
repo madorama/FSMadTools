@@ -4,7 +4,6 @@ open FSMadTools.Utility
 open UnityEngine
 open UnityEditor
 open UniRx
-open UnityEditor
 
 type FingerEditor() =
   inherit ToolBase()
