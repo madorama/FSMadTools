@@ -52,11 +52,14 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Source\String.fs" />
-    <Compile Include="Source\Delegate.fs" />
-    <Compile Include="Source\Option.fs" />
-    <Compile Include="Source\Unity.fs" />
+    <Compile Include="Utility\String.fs" />
+    <Compile Include="Utility\Delegate.fs" />
+    <Compile Include="Utility\Option.fs" />
+    <Compile Include="Unity\Unity.fs" />
+    <Compile Include="Unity\ReorderableList.fs" />
+    <Compile Include="Source\Path.fs" />
     <Compile Include="Source\Finger.fs" />
+    <Compile Include="Source\FingerTemplate.fs" />
     <Compile Include="Source\Editor\EditorError.fs" />
     <Compile Include="Source\Editor\CustomGUI.fs" />
     <Compile Include="Source\Editor\ToolBase.fs" />

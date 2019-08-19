@@ -1,10 +1,9 @@
 ﻿namespace FSMadTools
 
-open FSMadTools.Utility
+open MadLib
 open UnityEngine
-open UnityEditor
-open VRCSDK2
 open UniRx
+open VRCSDK2
 
 type LipSyncAttacher() =
   inherit ToolBase()
@@ -27,7 +26,7 @@ type LipSyncAttacher() =
       descriptor.Value |> Option.iter (fun desc -> desc.VisemeSkinnedMesh <- s)
       lipSyncVisemes <-
         s.sharedMesh
-        |> Unity.Mesh.blendShapeNames
+        |> FsUnity.Mesh.blendShapeNames
         |> List.filter (fun x -> vrcVisemes |> Array.exists (fun y -> x.ToLower() = y))
         |> List.toArray
       notExistVisemes <-
@@ -65,12 +64,12 @@ type LipSyncAttacher() =
     | Some s -> drawAttacher s.sharedMesh desc
 
   override __.draw () =
-    gameObject.Value <- Unity.Selection.activeGameObject ()
+    gameObject.Value <- FsUnity.Selection.activeGameObject ()
 
     match gameObject.Value with
     | None -> EditorError.pleaseSelectGameObject ()
     | Some go ->
-      descriptor.Value <- go |> Unity.GameObject.getComponent
+      descriptor.Value <- go |> FsUnity.GameObject.getComponent
       match descriptor.Value with
       | None -> EditorError.avatarDescriptorDoesNotExist ()
       | Some desc ->

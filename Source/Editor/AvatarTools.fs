@@ -1,6 +1,6 @@
 ﻿namespace FSMadTools
 
-open FSMadTools.Utility
+open MadLib
 open UnityEngine
 open UnityEditor
 open UniRx
@@ -39,13 +39,10 @@ type AvatarTools() as x =
 
   let OnEnable () =
     let skinPath =
-      System.Reflection.Assembly.GetExecutingAssembly().Location
-      |> System.IO.Path.GetDirectoryName
-      |> (fun x -> x.Replace("\\", "/") + "/GUISkin.guiskin")
-      |> FileUtil.GetProjectRelativePath
+      Path.dllProjectRelativeDirectory + "GUISkin.guiskin"
 
     skin <-
-      Unity.AssetDatabase.loadAssetAtPath<GUISkin>(skinPath) |> Option.apply (fun s ->
+      FsUnity.AssetDatabase.loadAssetAtPath<GUISkin>(skinPath) |> Option.apply (fun s ->
         style <- Some <| s.GetStyle("Tab")
       )
     selectTab.Subscribe(fun st ->

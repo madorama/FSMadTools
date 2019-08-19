@@ -1,11 +1,10 @@
 ﻿namespace FSMadTools
 
-open FSMadTools.Utility
+open MadLib
 open UnityEngine
 open UnityEditor
-open VRCSDK2
 open UniRx
-open UniRx.Triggers
+open VRCSDK2
 
 type ScalingAvatar() =
   inherit ToolBase()
@@ -18,7 +17,7 @@ type ScalingAvatar() =
     gameObject.Subscribe(
       Option.iter (fun (go : GameObject) ->
         scale <- go.transform.localScale
-        descriptor <- go |> Unity.GameObject.getComponent<VRC_AvatarDescriptor>
+        descriptor <- go |> FsUnity.GameObject.getComponent<VRC_AvatarDescriptor>
         descriptor |> Option.iter (fun desc ->
           let viewPos = desc.ViewPosition
           defaultViewPos <- Vector3(viewPos.x / scale.x, viewPos.y / scale.y, viewPos.z / scale.z)
@@ -35,7 +34,7 @@ type ScalingAvatar() =
       SceneView.RepaintAll()
 
   override __.draw () =
-    gameObject.Value <- Unity.Selection.activeGameObject ()
+    gameObject.Value <- FsUnity.Selection.activeGameObject ()
 
     match gameObject.Value with
     | None -> EditorError.pleaseSelectGameObject ()

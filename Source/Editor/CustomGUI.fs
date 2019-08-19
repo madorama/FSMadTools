@@ -5,7 +5,7 @@ open UnityEditor
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module CustomGUILayout =
-  open FSMadTools.Utility
+  open MadLib
 
   [<CompiledName "ObjectField">]
   let inline objectField (label : string) (obj : 'T :> Object) (allowSceneObjects : bool) : 'T option =
@@ -31,12 +31,20 @@ module CustomGUILayout =
     styledToolbar sel values EditorStyles.toolbar
 
   [<CompiledName("HorizontalScope")>]
+  let inline optionsHorizontalScope (options : GUILayoutOption[]) (f : GUILayout.HorizontalScope -> unit) =
+    using(new GUILayout.HorizontalScope(options)) (fun s -> f s)
+
+  [<CompiledName("HorizontalScope")>]
   let inline styledHorizontalScope (style : GUIStyle) (f : GUILayout.HorizontalScope -> unit) =
     using(new GUILayout.HorizontalScope(style)) (fun s -> f s)
 
   [<CompiledName("HorizontalScope")>]
   let inline horizontalScope (f : GUILayout.HorizontalScope -> unit) =
     using(new GUILayout.HorizontalScope()) (fun s -> f s)
+
+  [<CompiledName("VerticalScope")>]
+  let inline optionsVerticalScope (options : GUILayoutOption[]) (f : GUILayout.VerticalScope -> unit) =
+    using(new GUILayout.VerticalScope(options)) (fun s -> f s)
 
   [<CompiledName("VerticalScope")>]
   let inline styledVerticalScope (style : GUIStyle) (f : GUILayout.VerticalScope -> unit) =

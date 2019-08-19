@@ -1,4 +1,4 @@
-﻿namespace FSMadTools.Utility
+﻿namespace MadLib
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module Option =

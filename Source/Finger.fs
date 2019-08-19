@@ -1,28 +1,28 @@
-﻿namespace FSMadTools
+﻿namespace FSMadTools.Finger
+
+open UnityEngine
+open UnityEditor
+
+type HandType
+  = LeftHand
+  | RightHand
+  with
+    member u.toString () = u |> function
+      | LeftHand -> "LeftHand"
+      | RightHand -> "RightHand"
+    member u.toInt () = u |> function
+      | LeftHand -> 0
+      | RightHand -> 1
+
+type Finger =
+  { name : string
+  ; handType : HandType
+  ; mutable enabled : bool
+  ; mutable fingers : float32[]
+  }
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module Finger =
-  open UnityEngine
-  open UnityEditor
-
-  type HandType
-    = LeftHand
-    | RightHand
-    with
-      member u.toString () = u |> function
-        | LeftHand -> "LeftHand"
-        | RightHand -> "RightHand"
-      member u.toInt () = u |> function
-        | LeftHand -> 0
-        | RightHand -> 1
-
-  type Finger =
-    { name : string
-    ; handType : HandType
-    ; mutable enabled : bool
-    ; mutable fingers : float32[]
-    }
-
   let names = [
     "Thumb";
     "Index";
@@ -40,6 +40,14 @@ module Finger =
   let inline getFinger (i : int) (finger : Finger) : float32 =
     finger.fingers.[i]
 
+  let copyHand (src : Finger[]) (dest : Finger[]) =
+    let fingers = src |> Array.map (fun f -> (f.enabled, f.fingers |> Array.copy))
+    dest |> Array.iteri (fun i f ->
+      let (enabled, fingers) = fingers.[i]
+      f.enabled <- enabled
+      f.fingers <- fingers
+    )
+
   let init (finger : Finger) =
     finger.enabled <- false
     finger.fingers <- Array.zeroCreate 4
@@ -51,7 +59,10 @@ module Finger =
     ; fingers = Array.zeroCreate 4
     }
 
-  let drawEditor (finger : Finger) =
+  let createHand (handType : HandType) =
+    names |> List.map (fun name -> create name handType) |> List.toArray
+
+  let drawAndUpdate (finger : Finger) =
     use g = new EditorGUILayout.ToggleGroupScope(finger.handType.toString () + " " + finger.name, finger.enabled)
     finger.enabled <- g.enabled
 
