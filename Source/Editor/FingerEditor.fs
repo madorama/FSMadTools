@@ -6,7 +6,6 @@ open UnityEngine
 open UnityEditor
 open UniRx
 open FSMadTools.Finger
-open FsUnity
 
 type FingerEditor() =
   inherit ToolBase()
@@ -182,8 +181,6 @@ type FingerEditor() =
       drawTemplates ()
       drawFingerEditor ()
     )
-
-    //GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1.f))
 
   override __.draw () =
     gameObject.Value <- Selection.activeGameObject ()

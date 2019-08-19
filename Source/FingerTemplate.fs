@@ -21,14 +21,22 @@ module FingerTemplate =
   let create name leftHand rightHand =
     new FingerTemplate(name, leftHand |> Array.copy, rightHand |> Array.copy)
 
+  type fingers = {
+    thumb : float32[]
+    index : float32[]
+    middle : float32[]
+    ring : float32[]
+    little : float32[]
+  }
+
   let defaultTemplates =
-    let createTemplate name thumb index middle ring little =
+    let createTemplate name fingers =
       let ft = new FingerTemplate(name)
-      ft.LeftHand.[0].fingers <- thumb
-      ft.LeftHand.[1].fingers <- index
-      ft.LeftHand.[2].fingers <- middle
-      ft.LeftHand.[3].fingers <- ring
-      ft.LeftHand.[4].fingers <- little
+      ft.LeftHand.[0].fingers <- fingers.thumb
+      ft.LeftHand.[1].fingers <- fingers.index
+      ft.LeftHand.[2].fingers <- fingers.middle
+      ft.LeftHand.[3].fingers <- fingers.ring
+      ft.LeftHand.[4].fingers <- fingers.little
       ft.LeftHand |> Array.iter (fun x -> x.enabled <- true)
       Finger.copyHand ft.LeftHand ft.RightHand
       ft
@@ -36,12 +44,56 @@ module FingerTemplate =
     let openF = [| 0.f; 0.8f; 0.8f; 0.8f |]
     let closeF = [| 0.f; -0.8f; -0.8f; -0.8f |]
 
-    let fist = createTemplate "Fist" closeF closeF closeF closeF closeF
-    let handOpen = createTemplate "Hand Open" openF openF openF openF openF
-    let victory = createTemplate "Victory" closeF openF openF closeF closeF
-    let thumbsUp = createTemplate "Thumbs up" openF closeF closeF closeF closeF
-    let fingerPoint = createTemplate "Finger Point" closeF openF closeF closeF closeF
-    let handgun = createTemplate "Handgun" openF openF closeF closeF closeF
-    let rnr = createTemplate "Rock'n'roll" closeF openF closeF closeF openF
+    let fistFingers = {
+      thumb = closeF
+      index = closeF
+      middle = closeF
+      ring = closeF
+      little = closeF
+    }
 
-    [ fist; handOpen; victory; thumbsUp; fingerPoint; handgun; rnr ]
+    let handOpenFingers = {
+      thumb = openF
+      index = openF
+      middle = openF
+      ring = openF
+      little = openF
+    }
+
+    let victoryFingers = {
+      fistFingers with
+        index = openF
+        middle = openF
+    }
+
+    let thumbsUpFingers = {
+      fistFingers with
+        thumb = openF
+    }
+
+    let fingerPointFingers = {
+      fistFingers with
+        index = openF
+    }
+
+    let handgunFingers = {
+      fistFingers with
+        thumb = openF
+        index = openF
+    }
+
+    let rnrFingers = {
+      fistFingers with
+        index = openF
+        little = openF
+    }
+
+    [
+      createTemplate "Fist" fistFingers
+      createTemplate "Hand open" handOpenFingers
+      createTemplate "Victory" victoryFingers
+      createTemplate "Thumbs up" thumbsUpFingers
+      createTemplate "Finger point" fingerPointFingers
+      createTemplate "Handgun" handgunFingers
+      createTemplate "Rock'n'roll" rnrFingers
+    ]
