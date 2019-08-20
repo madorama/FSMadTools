@@ -6,7 +6,7 @@ VRChat用のUnityエディタ拡張です。
 
 ## インストール
 
-[こちらから.unitypackageファイルをダウンロード](http://github.com/mamunine/FSMadTools/releases)し、Unity上で`Assets -> Import Package -> Custom Package...`から、もしくは`ダウンロードした.unitypackageファイルをダブルクリック`してインポートしてください。
+[こちらから.unitypackageファイルをダウンロード](http://github.com/madorama/FSMadTools/releases)し、Unity上で`Assets -> Import Package -> Custom Package...`から、もしくは`ダウンロードした.unitypackageファイルをダブルクリック`してインポートしてください。
 インポートすると、Unityのメニューバーに`MadTools`が追加されます。
 
 ---
@@ -43,10 +43,27 @@ LipSyncを`Viseme Blend Shape`にし、各Visemeを自動的に設定してく�
 
 ### Finger Editor
 
-![Finger Editor Image](https://user-images.githubusercontent.com/13612643/51085519-db5a7480-177d-11e9-9380-3a2b3b971389.png)
+![Finger Editor Image](https://user-images.githubusercontent.com/13612643/63315169-20164180-c345-11e9-87f6-442b898627f0.png)
 
 1. `アニメーションクリップが設定されているGameObject`を選択
 1. `Clip`から設定したいアニメーションクリップを選択
 1. 各指を設定し、`Apply`ボタンを押す
 
 指の設定が簡単に行えます。
+
+#### テンプレート機能
+
+Finger Editorにはテンプレート機能があります。
+
+よく使う指の形を保存しておける感じの機能です。
+
+`Save`を押すと、`選択しているテンプレートに現在の指設定(右側のやつ)を保存`します。
+
+`Load`を押すと、`選択しているテンプレートに保存されている指設定を読み込み`ます。
+
+`Add`を押すと、`新しいテンプレートを追加`します。
+
+`Remove`を押すと、`選択しているテンプレートを削除`します。
+
+`Add`、`Remove`の動作は`Save`を押されるまで保存されることはありません。
+間違ってテンプレートを`Remove`してしまった場合、`タブを切り替える`か`AvatarToolsウィンドウ`を閉じてください。
