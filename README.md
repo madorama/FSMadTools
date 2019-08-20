@@ -65,5 +65,7 @@ Finger Editorにはテンプレート機能があります。
 
 `Remove`を押すと、`選択しているテンプレートを削除`します。
 
-`Add`、`Remove`の動作は`Save`を押されるまで保存されることはありません。
+`Add`、`Remove`の動作は`Save`を押されるまで保存されません。
 間違ってテンプレートを`Remove`してしまった場合、`タブを切り替える`か`AvatarToolsウィンドウ`を閉じてください。
+
+テンプレートは`Assets/Plugins/FSMadTools/finger_templates.json`に保存されています。別のプロジェクトでMadToolsを使用する際は、同ファイルを`Assets/Plugins/FSMadTools/`にコピーしてください。
