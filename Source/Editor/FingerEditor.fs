@@ -102,7 +102,7 @@ type FingerEditor() =
       let reader = new System.IO.StreamReader(templatesPath)
       let json = reader.ReadToEnd()
       reader.Close()
-      let loadedTemplates = JsonUtility.FromJson<JsonTemplates>(json) |> FingerTemplate.ofJsonTemplates;
+      let loadedTemplates = JsonUtility.FromJson<JsonTemplates>(json) |> FingerTemplate.ofJsonTemplates
       loadedTemplates.Templates |> List.iter addTemplate
     else
       FingerTemplate.defaultTemplates |> List.iter addTemplate
@@ -140,7 +140,6 @@ type FingerEditor() =
           ft.Templates <-
             templates
               |> List.ofSeq
-          AssetDatabase.CreateAsset(ft, templatesPath)
           let writer = new System.IO.StreamWriter(templatesPath, false)
           JsonUtility.ToJson(ft |> FingerTemplate.toJsonTemplates ,true)
             |> writer.Write
