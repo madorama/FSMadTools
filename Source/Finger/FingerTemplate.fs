@@ -10,16 +10,48 @@ type FingerTemplate(name, ?left, ?right) =
   member __.LeftHand with get () = leftHand
   member __.RightHand with get () = rightHand
 
+[<System.Serializable>]
+type JsonFingerTemplate = {
+  mutable name : string
+  mutable leftHand : JsonFinger[]
+  mutable rightHand : JsonFinger[]
+}
+
 [<AllowNullLiteral>]
 type FingerTemplates() =
   inherit ScriptableObject()
   [<SerializeField>]
   member val Templates : FingerTemplate list = [] with get, set
 
+[<System.Serializable>]
+type JsonTemplates = {
+  mutable templates : JsonFingerTemplate[]
+}
+
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module FingerTemplate =
+
   let create name leftHand rightHand =
     new FingerTemplate(name, leftHand |> Array.copy, rightHand |> Array.copy)
+
+  let toJsonFingerTemplate (ft : FingerTemplate) : JsonFingerTemplate = {
+    name = ft.Name
+    leftHand = ft.LeftHand |> Array.copy |> Array.map Finger.toJsonFinger
+    rightHand = ft.RightHand |> Array.copy |> Array.map Finger.toJsonFinger
+  }
+
+  let ofJsonFingerTemplate (jft : JsonFingerTemplate) : FingerTemplate =
+    create jft.name (jft.leftHand |> Array.map Finger.ofJsonFinger) (jft.rightHand |> Array.map Finger.ofJsonFinger)
+
+  let toJsonTemplates (templates : FingerTemplates) : JsonTemplates = {
+    templates =
+      templates.Templates |> List.map toJsonFingerTemplate |> Array.ofList
+  }
+
+  let ofJsonTemplates (jt : JsonTemplates) : FingerTemplates =
+    let ft = new FingerTemplates()
+    ft.Templates <- jt.templates |> List.ofArray |> List.map ofJsonFingerTemplate
+    ft
 
   type fingers = {
     thumb : float32[]

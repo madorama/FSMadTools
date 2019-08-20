@@ -50,18 +50,18 @@
   </PropertyGroup>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
-    <Content Include="packages.config" />
     <Compile Include="AssemblyInfo.fs" />
+    <Content Include="packages.config" />
     <Compile Include="Utility\String.fs" />
     <Compile Include="Utility\Delegate.fs" />
     <Compile Include="Utility\Option.fs" />
     <Compile Include="Unity\Unity.fs" />
     <Compile Include="Unity\ReorderableList.fs" />
     <Compile Include="Source\Path.fs" />
-    <Compile Include="Source\Finger.fs" />
-    <Compile Include="Source\FingerTemplate.fs" />
+    <Compile Include="Source\CustomGUI.fs" />
+    <Compile Include="Source\Finger\Finger.fs" />
+    <Compile Include="Source\Finger\FingerTemplate.fs" />
     <Compile Include="Source\Editor\EditorError.fs" />
-    <Compile Include="Source\Editor\CustomGUI.fs" />
     <Compile Include="Source\Editor\ToolBase.fs" />
     <Compile Include="Source\Editor\ScalingAvatar.fs" />
     <Compile Include="Source\Editor\LipSyncAttacher.fs" />
@@ -75,7 +75,6 @@
     </Reference>
     <Reference Include="FSharp.Core">
       <HintPath>packages\FSharp.Core.4.1.18\lib\net20\FSharp.Core.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="mscorlib">
       <Private>False</Private>
@@ -97,19 +96,19 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>..\..\..\..\Programming\Unity2017_4_15f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2017.4.28f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\Programming\Unity2017_4_15f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2017.4.28f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\Programming\Unity2017_4_15f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2017.4.28f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\Programming\Unity2017_4_15f1\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2017.4.28f1\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VRCSDK2">

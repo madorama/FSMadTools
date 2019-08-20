@@ -9,17 +9,18 @@ open FSMadTools.Finger
 
 type FingerEditor() =
   inherit ToolBase()
-  static let templatesPath = Path.dllProjectRelativeDirectory + "finger_templates.asset"
+  static let templatesPath = Path.dllProjectRelativeDirectory + "finger_templates.json"
   let gameObject = new ReactiveProperty<GameObject option>()
   let selectedClip = new IntReactiveProperty(0)
   let mutable clips = [||]
   let mutable editClip = None
   let mutable templates = new ReactiveCollection<FingerTemplate>()
   let mutable templatesList = new ReorderableList<FingerTemplate>(templates |> List.ofSeq, true, true, false, false)
+  let mutable scrollPosition = new Vector2(0.f, 0.f)
   let selectedHand = new IntReactiveProperty(0)
   let isPreviewMode = new BoolReactiveProperty(false)
-  let leftHand = Finger.createHand(LeftHand)
-  let rightHand = Finger.createHand(RightHand)
+  let leftHand = Finger.createHand(HandType.LeftHand)
+  let rightHand = Finger.createHand(HandType.RightHand)
 
   let init (go : GameObject) =
     leftHand |> Array.iter Finger.init
@@ -77,8 +78,11 @@ type FingerEditor() =
     ) |> ignore
 
     isPreviewMode.Subscribe(fun x ->
-      if x then AnimationMode.StartAnimationMode()
-      else AnimationMode.StopAnimationMode()
+      if x then
+        AnimationMode.StartAnimationMode()
+        updateFingers ()
+      else
+        AnimationMode.StopAnimationMode()
     ) |> ignore
 
     selectedHand.Subscribe(fun _ ->
@@ -94,9 +98,14 @@ type FingerEditor() =
     let addTemplate (t : FingerTemplate) =
       templates.Add(FingerTemplate.create t.Name t.LeftHand t.RightHand)
 
-    match templatesPath |> AssetDatabase.loadAssetAtPath<FingerTemplates> with
-      | None -> FingerTemplate.defaultTemplates |> List.iter addTemplate
-      | Some t -> t.Templates |> List.iter addTemplate
+    if templatesPath |> System.IO.File.Exists then
+      let reader = new System.IO.StreamReader(templatesPath)
+      let json = reader.ReadToEnd()
+      reader.Close()
+      let loadedTemplates = JsonUtility.FromJson<JsonTemplates>(json) |> FingerTemplate.ofJsonTemplates;
+      loadedTemplates.Templates |> List.iter addTemplate
+    else
+      FingerTemplate.defaultTemplates |> List.iter addTemplate
 
     templatesList.addDrawHeader (fun rect ->
       EditorGUI.LabelField(rect, "Templates")
@@ -121,57 +130,60 @@ type FingerEditor() =
           templates.RemoveAt(selectIndex)
           templatesList.Index <- min selectIndex (templatesList.Count - 1)
 
-      let templateButtons () =
+      let templateSaveLoadButtons () =
         let selIndex = templatesList.Index
 
         if GUILayout.Button("Save") && selIndex >= 0 then
           Finger.copyHand leftHand templates.[selIndex].LeftHand
           Finger.copyHand rightHand templates.[selIndex].RightHand
           let ft = ScriptableObject.CreateInstance<FingerTemplates>()
-          ft.Templates <- templates |> List.ofSeq
+          ft.Templates <-
+            templates
+              |> List.ofSeq
           AssetDatabase.CreateAsset(ft, templatesPath)
+          let writer = new System.IO.StreamWriter(templatesPath, false)
+          JsonUtility.ToJson(ft |> FingerTemplate.toJsonTemplates ,true)
+            |> writer.Write
+          writer.Flush()
+          writer.Close()
 
         if GUILayout.Button("Load") && selIndex >= 0 then
           Finger.copyHand templates.[selIndex].LeftHand leftHand
           Finger.copyHand templates.[selIndex].RightHand rightHand
-          updateFingers ()
+          if isPreviewMode.Value then updateFingers ()
 
       CustomGUILayout.optionsVerticalScope [| GUILayout.ExpandHeight(true); GUILayout.Width(200.f) |] (fun _ ->
         CustomGUILayout.horizontalScope (fun _ -> listButtons ())
-        templatesList.DoLayoutList ()
-        CustomGUILayout.horizontalScope (fun _ -> templateButtons ())
+        using(new GUILayout.ScrollViewScope(scrollPosition, GUILayout.MinHeight(551.f))) (fun s ->
+          scrollPosition <- s.scrollPosition
+          templatesList.DoLayoutList ()
+        )
+        CustomGUILayout.horizontalScope (fun _ -> templateSaveLoadButtons ())
       )
 
     let drawFingerEditor () =
       CustomGUILayout.verticalScope (fun _ ->
-        let drawClips () =
-          let clipNames = clips |> Array.map (fun x -> x.name)
-          selectedClip.Value <- EditorGUILayout.Popup("Clip", max 0 selectedClip.Value, clipNames)
-
-        drawClips ()
+        let clipNames = clips |> Array.map (fun x -> x.name)
+        selectedClip.Value <- EditorGUILayout.Popup("Clip", max 0 selectedClip.Value, clipNames)
 
         isPreviewMode.Value <- GUILayout.Toggle(isPreviewMode.Value, "Preview", GUI.skin.button)
-
         if GUILayout.Button("Apply") then updateFingers ()
 
         selectedHand.Value <- GUILayout.Toolbar(selectedHand.Value, [| "LeftHand"; "RightHand" |], EditorStyles.toolbarButton)
 
         EditorGUI.BeginChangeCheck()
 
-        let drawFingers () =
-          match selectedHand.Value with
-          | 0 -> leftHand |> Array.iter Finger.drawAndUpdate
-          | 1 -> rightHand |> Array.iter Finger.drawAndUpdate
-          | _ -> ()
+        match selectedHand.Value with
+        | 0 -> leftHand |> Array.iter Finger.drawAndUpdate
+        | 1 -> rightHand |> Array.iter Finger.drawAndUpdate
+        | _ -> ()
 
-          CustomGUILayout.horizontalScope (fun _ ->
-            if GUILayout.Button("Copy hand(left to right)") then
-              Finger.copyHand leftHand rightHand
-            if GUILayout.Button("Copy hand(right to left)") then
-              Finger.copyHand rightHand leftHand
-          )
-
-        drawFingers ()
+        CustomGUILayout.horizontalScope (fun _ ->
+          if GUILayout.Button("Copy hand(left to right)") then
+            Finger.copyHand leftHand rightHand
+          if GUILayout.Button("Copy hand(right to left)") then
+            Finger.copyHand rightHand leftHand
+        )
 
         if EditorGUI.EndChangeCheck() then
           if isPreviewMode.Value then updateFingers ()
