@@ -49,7 +49,7 @@ module FingerTemplate =
   }
 
   let ofJsonTemplates (jt : JsonTemplates) : FingerTemplates =
-    let ft = new FingerTemplates()
+    let ft = ScriptableObject.CreateInstance<FingerTemplates>()
     ft.Templates <- jt.templates |> List.ofArray |> List.map ofJsonFingerTemplate
     ft
 
