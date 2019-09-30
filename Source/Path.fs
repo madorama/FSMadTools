@@ -10,7 +10,7 @@ module Path =
   let dllDirectory =
     let p = dllPath |> System.IO.Path.GetDirectoryName
     p + "/"
-  
+
   let dllProjectRelativeDirectory =
     dllDirectory
     |> FileUtil.GetProjectRelativePath

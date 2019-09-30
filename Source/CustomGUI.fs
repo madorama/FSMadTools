@@ -32,24 +32,24 @@ module rec CustomGUILayout =
 
   [<CompiledName("HorizontalScope")>]
   let inline optionsHorizontalScope (options : GUILayoutOption[]) (f : GUILayout.HorizontalScope -> unit) =
-    using(new GUILayout.HorizontalScope(options)) (fun s -> f s)
+    using(new GUILayout.HorizontalScope(options)) f
 
   [<CompiledName("HorizontalScope")>]
   let inline styledHorizontalScope (style : GUIStyle) (f : GUILayout.HorizontalScope -> unit) =
-    using(new GUILayout.HorizontalScope(style)) (fun s -> f s)
+    using(new GUILayout.HorizontalScope(style)) f
 
   [<CompiledName("HorizontalScope")>]
   let inline horizontalScope (f : GUILayout.HorizontalScope -> unit) =
-    using(new GUILayout.HorizontalScope()) (fun s -> f s)
+    using(new GUILayout.HorizontalScope()) f
 
   [<CompiledName("VerticalScope")>]
   let inline optionsVerticalScope (options : GUILayoutOption[]) (f : GUILayout.VerticalScope -> unit) =
-    using(new GUILayout.VerticalScope(options)) (fun s -> f s)
+    using(new GUILayout.VerticalScope(options)) f
 
   [<CompiledName("VerticalScope")>]
   let inline styledVerticalScope (style : GUIStyle) (f : GUILayout.VerticalScope -> unit) =
-    using(new GUILayout.VerticalScope(style)) (fun s -> f s)
+    using(new GUILayout.VerticalScope(style)) f
 
   [<CompiledName("VerticalScope")>]
   let inline verticalScope (f : GUILayout.VerticalScope -> unit) =
-    using(new GUILayout.VerticalScope()) (fun s -> f s)
+    using(new GUILayout.VerticalScope()) f
