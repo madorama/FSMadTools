@@ -10,7 +10,7 @@
     <RootNamespace>FSMadTools</RootNamespace>
     <AssemblyName>FSMadTools</AssemblyName>
     <UseStandardResourceNames>true</UseStandardResourceNames>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Name>FSMadTools</Name>
     <TargetFrameworkProfile />
@@ -51,7 +51,6 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Content Include="packages.config" />
     <Compile Include="Utility\String.fs" />
     <Compile Include="Utility\Delegate.fs" />
     <Compile Include="Utility\Option.fs" />
@@ -67,14 +66,12 @@
     <Compile Include="Source\Editor\LipSyncAttacher.fs" />
     <Compile Include="Source\Editor\FingerEditor.fs" />
     <Compile Include="Source\Editor\AvatarTools.fs" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp-Editor">
-      <HintPath>..\Library\ScriptAssemblies\Assembly-CSharp-Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>packages\FSharp.Core.4.1.18\lib\net20\FSharp.Core.dll</HintPath>
+      <HintPath>packages\FSharp.Core.4.7.1\lib\net45\FSharp.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="mscorlib">
       <Private>False</Private>
@@ -112,7 +109,11 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="VRCSDK2">
-      <HintPath>..\Assets\VRCSDK\Dependencies\VRChat\VRCSDK2.dll</HintPath>
+      <HintPath>..\Assets\VRCSDK\Plugins\VRCSDK2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VRCSDKBase">
+      <HintPath>..\Assets\VRCSDK\Plugins\VRCSDKBase.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

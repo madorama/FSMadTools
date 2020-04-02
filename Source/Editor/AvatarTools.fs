@@ -29,13 +29,13 @@ type AvatarTools() as x =
   let selectTab = new ReactiveProperty<Tags>(TagScalingEditor)
   let mutable selectEditor : ToolBase option = None
 
-  let OnDisable () =
-    if AnimationMode.InAnimationMode() then
-      AnimationMode.StopAnimationMode()
-
   [<MenuItem("MadTools/Avatar Tools")>]
   static let init () =
     EditorWindow.GetWindow<AvatarTools>("Avatar Tools") |> ignore
+
+  let OnDisable () =
+    if AnimationMode.InAnimationMode() then
+      AnimationMode.StopAnimationMode()
 
   let OnEnable () =
     let skinPath =
@@ -43,16 +43,16 @@ type AvatarTools() as x =
 
     skin <-
       FsUnity.AssetDatabase.loadAssetAtPath<GUISkin>(skinPath) |> Option.apply (fun s ->
-        style <- Some <| s.GetStyle("Tab")
+        style <- Some (s.GetStyle("Tab"))
       )
     selectTab.Subscribe(fun st ->
       if AnimationMode.InAnimationMode() then
         AnimationMode.StopAnimationMode()
       selectEditor <-
         match st with
-        | TagScalingEditor -> Some (new ScalingAvatar() :> ToolBase)
-        | TagLipSyncAttacher -> Some (new LipSyncAttacher() :> ToolBase)
-        | TagFingerEditor -> Some (new FingerEditor() :> ToolBase)
+        | TagScalingEditor -> Some (ScalingAvatar() :> ToolBase)
+        | TagLipSyncAttacher -> Some (LipSyncAttacher() :> ToolBase)
+        | TagFingerEditor -> Some (FingerEditor() :> ToolBase)
     )
   
   let OnGUI () =
@@ -66,5 +66,8 @@ type AvatarTools() as x =
       GUI.skin <- oldSkin
 
       selectEditor |> Option.iter (fun x -> x.draw ())
-    | _ -> ()
+
+    | _ ->
+      ()
+
     x.Repaint()

@@ -8,7 +8,7 @@ module Path =
     |> (fun x -> x.Replace("\\", "/"))
 
   let dllDirectory =
-    let p = dllPath |> System.IO.Path.GetDirectoryName
+    let p = dllPath |> System.IO.Path.GetDirectoryName |> (fun x -> x.Replace("\\", "/"))
     p + "/"
 
   let dllProjectRelativeDirectory =
