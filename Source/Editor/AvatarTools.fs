@@ -50,7 +50,7 @@ type AvatarTools() as x =
         AnimationMode.StopAnimationMode()
       selectEditor <-
         match st with
-        | TagScalingEditor -> Some (ScalingAvatar() :> ToolBase)
+        | TagScalingEditor -> Some (Scaling.ScalingAvatar() :> ToolBase)
         | TagLipSyncAttacher -> Some (LipSyncAttacher() :> ToolBase)
         | TagFingerEditor -> Some (FingerEditor() :> ToolBase)
     )

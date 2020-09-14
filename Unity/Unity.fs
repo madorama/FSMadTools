@@ -7,7 +7,7 @@ open UnityEditor
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module Debug =
   [<CompiledName "Log">]
-  let log (message :'a) : 'a =
+  let inline log (message : ^a) : ^a =
     Debug.Log(message)
     message
 

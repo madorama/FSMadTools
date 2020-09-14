@@ -3,12 +3,12 @@
 open MadLib
 open UnityEngine
 open UniRx
-open VRCSDK2
+open VRC.SDK3.Avatars.Components
 
 type LipSyncAttacher() =
   inherit ToolBase()
   let gameObject = new ReactiveProperty<GameObject option>()
-  let descriptor = new ReactiveProperty<VRC_AvatarDescriptor option>()
+  let descriptor = new ReactiveProperty<VRCAvatarDescriptor option>()
   let faceMesh = new ReactiveProperty<SkinnedMeshRenderer option>()
   let mutable lipSyncVisemes = Array.zeroCreate 0
   let mutable notExistVisemes = Array.zeroCreate 0
@@ -36,8 +36,8 @@ type LipSyncAttacher() =
       )
     ) |> ignore
 
-  let attachLipSync (lipSyncVisemes : string[]) (desc : VRC_AvatarDescriptor) =
-    desc.lipSync <- VRC_AvatarDescriptor.LipSyncStyle.VisemeBlendShape
+  let attachLipSync (lipSyncVisemes : string[]) (desc : VRCAvatarDescriptor) =
+    desc.lipSync <- VRCAvatarDescriptor.LipSyncStyle.VisemeBlendShape
 
     // lipSyncVisemesをvisemesと同じ順にする
     let lipSyncVisemes = vrcVisemes |> Array.map (fun name ->
@@ -46,7 +46,7 @@ type LipSyncAttacher() =
 
     desc.VisemeBlendShapes <- lipSyncVisemes
 
-  let drawAttacher (mesh : Mesh) (desc : VRC_AvatarDescriptor) =
+  let drawAttacher (mesh : Mesh) (desc : VRCAvatarDescriptor) =
     match notExistVisemes with
     | [||] ->
       if GUILayout.Button("Attach Lip Sync") then
@@ -56,7 +56,7 @@ type LipSyncAttacher() =
         EditorError.error (sprintf "%sが存在しません" x)
       )
 
-  let drawGUI (desc : VRC_AvatarDescriptor) =
+  let drawGUI (desc : VRCAvatarDescriptor) =
     faceMesh.Value <- CustomGUILayout.objectField "Face Mesh" desc.VisemeSkinnedMesh true
 
     match desc.VisemeSkinnedMesh |> Option.ofObj with

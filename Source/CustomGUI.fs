@@ -4,7 +4,7 @@ open UnityEngine
 open UnityEditor
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-module rec CustomGUILayout =
+module CustomGUILayout =
   open MadLib
 
   [<CompiledName "ObjectField">]

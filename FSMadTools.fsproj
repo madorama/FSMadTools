@@ -93,23 +93,23 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2017.4.28f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2018.4.20f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2017.4.28f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2018.4.20f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2017.4.28f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2018.4.20f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2017.4.28f1\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\Programming\Unity Hub\Editors\2018.4.20f1\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="VRCSDK2">
-      <HintPath>..\Assets\VRCSDK\Plugins\VRCSDK2.dll</HintPath>
+    <Reference Include="VRCSDK3A">
+      <HintPath>..\Assets\VRCSDK\Plugins\VRCSDK3A.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VRCSDKBase">
