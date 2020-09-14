@@ -27,6 +27,7 @@ Unityのメニューバーから`MadTools`を選択してください。
     - 選択時、自動的にGameObjectのViewPositionとScaleからDefault ViewPositionが求められます
 1. `Default ViewPosition`に`GameObjectのScaleが全て1の時の値`を設定
 1. `Scale`に任意の値を設定
+    - `Split Scale Mode`にチェックを入れるとX,Y,Zを個別に変更できるようになります
 1. `Change Scale`ボタンを押す
 
 `GameObjectのScale`を`Scale`の値に変更し、`VRC_Avatar DescriptorのViewPosition`を良い感じに変更します。
